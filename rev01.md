@@ -3,27 +3,45 @@
 vim:set tw=79 ts=4 sts=4 sw=4 et nosi filetype=markdown:
 -->
 
+WARNINGS: This had design flaw of combination of the diode direction and
+pins used for ISP connection.
 
-NOTE:  This was never made at this moment.
+NOTE:  This was never made at this moment.  This is left as is to record what I
+was thinking initially.
 
+## Case Design
+
+LibreCAD was used to create DXF (drawing exchange format) file for case.
+
+* [Keyboard case CAD data](cad/cg56.dxf)
+
+MDF was cut by laser using this data.  Small holes are used to position each
+piece using wooen tooth picks.  Some file works were applied to round the edges
+and paper plaster was used to fill uneven surfaces.  So the resulting keyboard
+case has a smooth shape.
 
 ## Wiring of MCU
 
-MCU used is ATmega32u4 on the generic Teensy compatible board since it offers
-better access to the I/O pins (25) than pro-micro boards (20).  The MCU board
-is placed on the back of the Q-key with its top surface facing downward with
-keyboard case in normal orientation.  When wiring MCU with keyboard case
-flipped, the MCU board is placed on the back of the Q-key with its top surface
-facing upward from the flipped keyboard case.
+Initially, ATmega32u4 was considered as the MCU used for this USB keyboard
+project.  Generic Teensy 2.0 compatible board was selected since it offers
+better access to the I/O pins (25) than pro-micro boards (20).
 
-Top view of Teensy board:
+NC LASER cut MDF board pieces were stacked and glued to form the keyboard case
+which holds multiple Gateron-made Cherry-type mechanical switches.
+
+The MCU board is placed on the back of the Q-key with its top surface facing
+downward with keyboard case in normal orientation.  When wiring MCU with
+keyboard case flipped, the MCU board is placed on the back of the Q-key with
+its top surface facing upward from the flipped keyboard case.
+
+Top view of Teensy 2.0 board:
 
 
 ```
                               Q-key
                               MINI
                               USB
-                    	+---+-----+---+
+                        +---+-----+---+
 Interior            GND |*  |     |  *|Vcc              Interior
 PE6         SS      PB0 |*  |     |  *|PF0  ADC0        AREF
 AIN0        SCLK    PB1 |*  |     |  *|PF1  ADC1          |
@@ -45,8 +63,8 @@ RST -----------------------------+
 ```
 The pin names used here are ones for ATmega32u4 chip.
 
-Here, the Teensy board has:
-* 31 total PINs
+Here, the Teensy 2.0 board has:
+* 31 total PINs (12+5+2+12) internal one is hard to reach
 * 6 non-IO PINs
 * 25 I/O pins  --- This is the advantage over pro-micro board.
 
@@ -59,20 +77,24 @@ There are 25 I/O needs under normal usage:
 
 This can be implemented as:
 
-* DIODE_DIRECTION COL2ROW
-* ROW[0:7] =      { B0, B1, B2, B3, E6, B7, D2, D3 } (read)
-* Column[0:6] =   { F0, F1, F4, F5, F6, F7, B6 }     (write)
+* DIODE_DIRECTION COL2ROW (Column as input side)
+* ROW[0:7] =      { B0, B1, B2, B3, E6, B7, D2, D3 } (write) - Kathode
+* Column[0:6] =   { F0, F1, F4, F5, F6, F7, B6 }     (read) - Anode
 * LED[1:4][R:B] = { D0, D1, C7, C5, D7, D4, B5, B4 }
 * Internal_LED =  { D6 }
 * Sound[0] =      { C6 } (OCR3A, Timer 3, channel A, 16 bits)
 
-This ensures access to reprogram via SPI/ISP/ICSP by keeping all the
-following pins available as input if keys are not pressed.
+This ensures access to reprogram via SPI/ISP/ICSP using AVR-ISP II by keeping
+all the following pins available as input if keys are not pressed.
 
 * B1 SCLK
 * B2 MOSI
 * B3 MISO
 *    RESET
+
+(Oops, I think diode direction should have been ROW2COL to make B1-B3 to be
+input (read) side, otherwise programming ISP mode comes with some risk.  Sigh.
+Anyway, I didn't make this)
 
 Reset should have pull-up resister 10K
 
@@ -81,7 +103,8 @@ Reset should have pull-up resister 10K
 For easier wiring, let's recap as a counter clockwise mapping for the MCU
 board. (MCU under Q-Key, far side first):
 
-The pin names usage here are ones for ATmega32u4 chip.
+The pin names usage here are ones for ATmega32u4 chip (Diode is assumed to be
+ROW2COL).
 
 | MCU | Parts   | Note                 |I/O|
 |-----|---------|----------------------|---|
@@ -92,8 +115,8 @@ The pin names usage here are ones for ATmega32u4 chip.
 | PB3 | R3/ICSP | `;`-row    (MISO)    | I |
 | PE6 | R4      | `Z`-row (inside)     | I |
 | PB7 | R5      | `/`-row              | I |
-| PD0 | LED1R   | `Q`-side LED (SCL)   | O |
-| PD1 | LED1B   | `Q`-side LED (SDA)   | O |
+| PD0 | LED4R   | `P`-side LED         | O |
+| PD1 | LED4B   | `P`-side LED         | O |
 | PD2 | R6      | left-bottom row      | I |
 | PD3 | R7      | right-bottom row     | I |
 | PC6 | SPEAKER | SPEAKER              | O |
@@ -116,33 +139,31 @@ The pin names usage here are ones for ATmega32u4 chip.
 | PF0 | C0      | `[/BS`-column        | O |
 | VCC | NC      | * *                  |   |
 
+This is rather tight and bad design for ISP programming access due to I?O
+conflict of actual switch array being COL2ROW.
 
 #### MCU firmware
 
-Please note that the generic Teensy doesn't come with the proprietary Teensy
-firmware.
+Please note that the generic Teensy 2.0 bought at Aliexpress are just PCB
+pattern copy product which doesn't come with the proprietary Teensy firmware by
+pjrc.com.
 
-First thing to do is flush your ATmega32u4 chip with the LUFA HID bootloader by
-connecting the programmer via SPI interface using `avrdude` program.  Any SPI
-interface programmer can be used.  Although the real Teensy comes with 512B
-bootloader, the LUFA HID bootloader is slightly larger than 2048B and requires
-you to keep 4KB space for the bootloader.  There is an alternative Free small
-HID bootloader [NanoBoot](https://github.com/volium/nanoBoot) with 512B.  You
-may try it too.
+First thing to do is flash your ATmega32u4 chip with an alternative Free small
+HID bootloader [NanoBoot](https://github.com/volium/nanoBoot) with 512B by
+connecting the programmer via SPI interface using `avrdude` program.
 
-Arduino ICSP port (Top view of male MCU side connector):
-```
-1 MISO  x x  VCC
-3 SCLK  x x  MOSI
-5 RESET x x  GND
-```
+Connection to ISP is done with IC clip directly to the board. (no connector)
+
+See https://osamuaoki.github.io/jp/2021/12/11/atmega32u4-4/
 
 ### LED
 
-Follow the GH60 LED code example for simplicity for 8 GPIO PINs in which
-simple on/off control is applied to the anodes of the LEDs with their
-cathodes grounded.  Use CRD (18mA) between Teensy output and Anode of each
-LED.
+Follow the GH60 LED code example for simplicity for 8 GPIO PINs in which simple
+on/off control is applied to the anodes of the LEDs with their cathodes
+grounded.  Use CRD (18mA) between Teensy 2.0 output and Anode of each LED.
+
+You shouldn't turn on more than 4 LEDs to avid violating maximum total current
+for ATmega32u4.
 
 User can redefine one of the following `__attribute__ ((weak))` functions
 to customize LED behavior:
@@ -159,6 +180,8 @@ USB control the following mode LED
 
 ### Guide for the wiring steps
 
+1. Test MCU board by programming via AVR-ISP with blink LED on PD6.
+
 1. LEDs are lightly glued with hot-melt glue to the key switches to prevent
    falling.
 
@@ -168,7 +191,7 @@ USB control the following mode LED
    keyboard.
 
 1. Then the wiring of rows are done.  Adjacent row pins are connected with 24mm
-   cut PTFE wire of AWG30 (0.26mmD) with each end stripped about 2mm.  Wire are
+   cut ETFE wire of AWG30 (0.26mmD) with each end stripped about 2mm.  Wire are
    passed through inside cavity of the case so it doesn't interfere with the
    bottom cap plate of the case.
 
@@ -180,30 +203,7 @@ USB control the following mode LED
    bias for each diode.  Since diodes needs to be squeezed into tight space,
    there is a fairly good change of shorting unexpectedly.
 
-1. 3 rows (PA;) are connected to male 2x6 pins which plugs into the Arduino
-   ICSP port.
-
-1. ICSP port (Female) is connected to MCU board  PB1, PB2, PB3, RST, GND, and
-   VCC.
-
-1. Test MCU board by programming via ICSP with blink LED on PD6.
-
-1. LEDs are connected to the MCU board using long wire.  D0 and D1 should have
-   Dupont connectors.  Others, if possible.
-
-1. Test LED connections by programming via ICSP with blink LED.
-
-1. Speaker is connected to the MCU board using long wire with Dupont
-   connectors.
-
-1. Test speaker connections by programming via ICSP with beep.
-
-1. Then other rows and columns are connected to the MCU board using long wires.
-   Consider inserting Dupont connectors as much as possible.  Please note the
-   column wiring is passed through the surface of the case since it doesn't
-   interfere with the bottom cap plate of the case.  All side way connections
-   are made via the top row where bottom cover plate was groove.  Please note
-   ROW wires connect to the far-side of the MCU board.
+1. Connect MCU board to parts.
 
 1. Place PI tape underneath the MCU, speaker and connector positions to prevent
    shorting the circuit and mark proper MCU position aligning with the bottom
