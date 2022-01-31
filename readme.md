@@ -49,20 +49,17 @@ The following design policy is deployed to design a custom keyboard.
     * ESC in place of CapsLock position (yay, Vim).
     * Keep F and J keys separated with 4 keys instead of standard 2 keys.
     * Move non-shift non-alphabet symbols to the center.
-    * FnU/FnD keys in thumb home positions to offer practically all 109 keys.
-        * Function keys are in the top row with FnU.
-        * Number keys are in the high-middle row with FnU.
-        * Symbol keys (`!@#$%^&*()`) are in the high-middle row with FnD.
-        * Odd keys are in the low-middle row with FnD/FnU
+    * Fn keys in thumb home positions to offer practically all 109 keys.
+        * Function keys are in the top row with Fn.
+        * Number keys are in the high-middle row with Fn.
+        * Odd keys are in the low-middle row with Fn
     * SPACE should be at the center of the bottom row.
     * Cursor keys are in the hard to reach part of the bottom row.
-    * 3D-like effect using Key cap height differences with OEM key caps.
-* 4 LEDs on top row keys * 2 colors = 8 GPIO (ON/OFF)
-    * Cathode common LED (R:outside +B:inside)
+    * Topography effects using key cap height differences with the OEM key set.
 * Keep it simple and cheap (It's my first custom keyboard!)
-    * Use commodity electronics parts
-    * Use the laser cut MDF board as the case
-    * Use only 1U key caps from the OEM 87 key cap set (=no stabilizer)
+    * Use commodity electronics parts (as much)
+    * Use the laser cut MDF board as the case (if needed)
+    * Use only 1U key caps from the OEM key cap set (=no stabilizer)
     * No PCB but lots of messy hand wiring :-)
 
 ## What's different
@@ -81,9 +78,9 @@ You may wonder what's different from other so called "ortholinear" keyboards.
 Yah, it's not much different in basic hardware design ... it's mostly a taste
 difference.
 
-## Design
+## Design thoughts
 
-Here, ASCII art versions of basic design implementation data are provided.
+Here, ASCII art versions of basic design implementation ideas are provided.
 
 ### Case Design
 
@@ -92,21 +89,23 @@ finger coverage and without stressing pinkie finger.
 
 * Primary positions: `###` (home positions)
 * Almost primary positions: `.#.` (almost home positions)
-* Adjacent posiions: `...` (minimum movements)
+* Adjacent positions: `...` (easy to reach minimum movement positions)
 
 ```
 ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
 │   │...│...│...│...│...│   │   │...│...│...│...│...│   │
 ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
-│...│.#.│###│###│###│...│   │   │...│###│###│###│.#.│...│
+│...│###│###│###│###│...│...│...│...│###│###│###│###│...│
 ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
-│...│.#.│...│...│...│...│   │   │...│...│...│...│.#.│...│
+│...│.#.│...│...│.#.│...│...│...│...│.#.│...│...│.#.│...│
 ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
 │...│...│   │   │...│###│...│...│###│...│   │   │...│...│
 └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
 ```
 
 ### Key Assignment
+
+Use least surprise design based on the standard QWERTY-keyboard.
 
 Here is an example of key assignment.
 
@@ -158,7 +157,7 @@ OEM 1U Key cap are used as below to offer optimal topography.
 ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
 │ 1 │_A_│_A_│_A_│_A_│ A │ 1 │ 1 │ A │_A_│_A_│_A_│_A_│ 1 │
 ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
-│ Z │_Z_│ Z │ Z │ Z │ Z │ 1 │ 1 │ Z │ Z │ Z │ Z │_Z_│ Z │
+│ Z │ Z │ Z │ Z │ Z │ Z │ 1 │ 1 │ Z │ Z │ Z │ Z │ Z │ Z │
 ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
 │ A │ Z │ R │ R │ 1 │_Q_│ 1 │ 1 │_Q_│ 1 │ R │ R │ Z │ A │
 └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
@@ -186,7 +185,7 @@ soft UV-resin or crazy-glue+baking-soda may be interesting options to create
 topography.  This is my plan-B.
 
 
-## Design Implementation
+## Design implementations
 
 
 ### ATmega32u4 (rev01)
@@ -198,21 +197,24 @@ pro-micro boards (20) and cheap.
 * See [ATmega32u4 (rev01)](rev01.md) -- never made -- for details of around MCU and shape of key matrix.
 * See [Key matrix for cg56](cg56.md) for electrical details of key matrix.
 
+Never completed!
+
 ### AT90USB1286 (rev02)
 
-After making the physical keyboard shell box in 2018, I procrastinated to
-finish this project for about 2 years without doing anything.  Then AT90USB1286
-on the generic Teensy 2.0++ compatible board became available in very
-reasonable price point and I got 2 of them.  So I decided to switch this
-project to use this MCU since it offers higher IO pin counts and larger memory
-size.  (rev01 project was stalled.)
+After making the physical keyboard shell box in 2018 for rev01, I
+procrastinated to finish this project for about 2 years without doing anything.
+
+Then AT90USB1286 on the generic Teensy 2.0++ compatible board became available
+in very reasonable price point and I got 2 of them.  So I decided to switch
+this project to use this MCU which offers higher IO pin counts and larger
+memory size.  (rev01 project was stalled.)
 
 In order to fit this larger board, the internal cavity of the physical keyboard
 shell box was grounded to make some space.
 
-I also got micro-USB female connector on pitch conversion board.  I manually
-enlarged the cable connection opening to fit it.  This enabled USB cable
-connection of this keyboard to become a detachable magnet type.
+I also got micro-USB female connector on pitch conversion PCB board.  I
+manually enlarged the cable connection opening to fit it.  This enabled USB
+cable connection of this keyboard to become a detachable magnet type.
 
 * See [AT90USB1286 (rev02)](rev02.md) for details of around MCU and shape of key matrix.
 * See [Key matrix for cg56](cg56.md) for electrical details of key matrix.

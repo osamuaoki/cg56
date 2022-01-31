@@ -78,8 +78,8 @@ There are 25 I/O needs under normal usage:
 This can be implemented as:
 
 * DIODE_DIRECTION COL2ROW (Column as input side)
-* ROW[0:7] =      { B0, B1, B2, B3, E6, B7, D2, D3 } (write) - Kathode
-* Column[0:6] =   { F0, F1, F4, F5, F6, F7, B6 }     (read) - Anode
+* ROW[0:7] =      { B0, B1, B2, B3, E6, B7, D2, D3 } (write) - Cathode
+* Column[0:6] =   { B6, F7, F6, F5, F4, F1, F0 }     (read) - Anode
 * LED[1:4][R:B] = { D0, D1, C7, C5, D7, D4, B5, B4 }
 * Internal_LED =  { D6 }
 * Sound[0] =      { C6 } (OCR3A, Timer 3, channel A, 16 bits)
@@ -106,6 +106,11 @@ board. (MCU under Q-Key, far side first):
 The pin names usage here are ones for ATmega32u4 chip (Diode is assumed to be
 ROW2COL).
 
+Pin order from USB connector side:
+
+* Anti-clock wise: Top view
+* Clock wise: Bottom view
+
 | MCU | Parts   | Note                 |I/O|
 |-----|---------|----------------------|---|
 | GND | GND     | * *                  |   |
@@ -130,13 +135,13 @@ ROW2COL).
 | PD7 | LED2R   | `T`-side LED         | O |
 | PB4 | LED1B   | `Q`-side LED         | O |
 | PB5 | LED1R   | `Q`-side LED         | O |
-| PB6 | C6      | `Tab/]`-column       | O |
-| PF7 | C5      | `Q/Y`-column         | O |
-| PF6 | C4      | `W/U`-column         | O |
+| PB6 | C0      | `Tab/]`-column       | O |
+| PF7 | C1      | `Q/Y`-column         | O |
+| PF6 | C2      | `W/U`-column         | O |
 | PF5 | C3      | `E/I`-column         | O |
-| PF4 | C2      | `R/O`-column         | O |
-| PF1 | C1      | `T/P`-column         | O |
-| PF0 | C0      | `[/BS`-column        | O |
+| PF4 | C4      | `R/O`-column         | O |
+| PF1 | C5      | `T/P`-column         | O |
+| PF0 | C6      | `[/BS`-column        | O |
 | VCC | NC      | * *                  |   |
 
 This is rather tight and bad design for ISP programming access due to I?O
@@ -199,9 +204,14 @@ USB control the following mode LED
    always connected to the key switches.  Cathode side with bar are connected
    within each column.
 
-1. Use tester to check keyboard connections and check insulation with reverse
-   bias for each diode.  Since diodes needs to be squeezed into tight space,
-   there is a fairly good change of shorting unexpectedly.
+1. Use tester to check keyboard connections in ohm mode.  (Please note that, in
+   ohm mode of modern multimater, diode appears as insulator for both
+   directions.)
+
+1. Use tester to check forward and reverse voltage drop across each diode to be
+   around 0.5V-0.6V and OL (overrange) to make sure each diode pointing the
+   right direction and not shorted.  It is easy to overlook the cathode
+   marking.
 
 1. Connect MCU board to parts.
 
@@ -232,5 +242,5 @@ mechanical keyboards.  It ain't cheap but it's fun!!!
 * Diode IN4148 equiv. (100 piece pack)  --  $ 2
 * AWG30 multi color set                 --  $ 5
 * Hot melt glue and glue gun            --  $10 (?)
-* AWG30 Wires, solders, circuit tester, ...
+* Solders, circuit tester, ...
 

@@ -139,7 +139,7 @@ XX              32  A11 |*  O     S  @| A7  17
     37  SCK   ------------------+ |
         GND   --------------------+
 
-BOOT0
+BOOT1: pull down to ground to enable DFU mode. (10K?)
 
 ```
 The pin names used here are ones for STM32F411CEU6 chip.
@@ -157,40 +157,41 @@ There are 31 I/O needs under normal usage:
 This can be implemented as:
 
 * DIODE_DIRECTION COL2ROW (Column as input side)
-* ROW[0:3] =      { 4 }      (write) - Kathode
-* Column[0:13] =  { 14 }     (read) - Anode
-* Internal_LED =  { C13 }
-
-Also this leaves all PF-pins for analog I/O.
-
-(Reset should have pull-up resister 10K ???)
+* ROW[0:3] =      { B12, B13, B14, B15 }      (write) - Cathode
+* Column[0:13] =  { A8, A9, A12, A15, B3, B4, B5, B6, B7, B8, B9, C14, C15, B10 }     (read) - Anode
 
 #### MCU to Parts
 
 For easier wiring, let's recap as a counter clockwise mapping for the MCU
-board. (MCU under Q-Key, far side first):
+board. (MCU at the center:
 
 The pin names usage here are ones for STM32F411CEU6 chip.
 
-| MCU | Parts   | Note                 |I/O|
-|-----|---------|----------------------|---|
-| B12 | R0      | `Q`-row              | O | Q-side
-| B13 | R1      | `A`-row              | O |
-| B14 | R2      | `Z`-row              | O |
-| B15 | R3      | bottom row           | O |
-| A8  | C13     | `Tab`-column       | I |
-| A9  | C12     | `Q`-column         | I |
-| A10 |         | NO PIN                   |   |
-| A11 |         | NO PIN                |   |
-| A12 | C11     | `W`-column         | I |
-| A15 | C10     | `E`-column         | I |
-| B3  | C9      | `R`-column         | I |
-| B4  | C8      | `T`-column         | I |
-| B5  | C7      | `[`-column         | I |
-| B6  | C6      | `]`-column         | I |
-| B7  | C5      | `Y`-column         | I |
-| B8  | C4      | `U`-column         | I |
-| B9  | C3      | `I`-column         | I |
+Pin order from USB connector side:
+
+* Anti-clock wise: Top view
+* Clock wise: Bottom view
+
+
+| MCU | Parts   | Note               |I/O|
+|-----|---------|--------------------|---|
+| B12 | R0      | `Q`-row            | O | Q-side
+| B13 | R1      | `A`-row            | O |
+| B14 | R2      | `Z`-row            | O |
+| B15 | R3      | bottom row         | O |
+| A8  | C0      | `Tab`-column       | I |
+| A9  | C1      | `Q`-column         | I |
+| A10 |         | NO PIN             |   |
+| A11 |         | NO PIN             |   |
+| A12 | C2      | `W`-column         | I |
+| A15 | C3      | `E`-column         | I |
+| B3  | C4      | `R`-column         | I |
+| B4  | C5      | `T`-column         | I |
+| B5  | C6      | `[`-column         | I |
+| B6  | C7      | `]`-column         | I |
+| B7  | C8      | `Y`-column         | I |
+| B8  | C9      | `U`-column         | I |
+| B9  | C10     | `I`-column         | I |
 | 5V  |         |                    |   |
 | GND |         |                    |   |
 | 3V3 |         |                    |   |
@@ -200,24 +201,24 @@ The pin names usage here are ones for STM32F411CEU6 chip.
 | GND |         | Edge * *           |   |
 | VB  |         |                    |   |
 | C13 |         | internal LED       | O |
-| C14 | C2      | `O`-column         | I |
-| C15 | C1      | `P`-column         | I |
+| C14 | C11     | `O`-column         | I |
+| C15 | C12     | `P`-column         | I |
 | RST | NRST    | * *                | * |
-| A3  | ADC0    | (Joystick)           |   |
-| A4  | ADC1    | (Joystick)           |   |
+| A3  | ADC0    | (Joystick)         |   |
+| A4  | ADC1    | (Joystick)         |   |
 | A5  | ADC2    |                    |   |
 | A6  | ADC3    |                    |   |
 | A7  | ADC4    |                    |   |
 | A8  | ADC5    |                    |   |
 | A9  | ADC6    |                    |   |
-| A10 | ADC7    | NO PIN                   |   |
-| B0  | ADC8    | NO PIN                |   |
+| A10 | ADC7    | NO PIN             |   |
+| B0  | ADC8    | NO PIN             |   |
 | B1  | ADC9    |                    |   |
-| B2  | BOOT1   |                    |   |
-| B10 | C0      | `BS`-column        | I |
-| 3V3 | VCC     | * *                  | * |
-| GND | GND     | * *                  | O |
-| 5V  | NC      | * *                  |   |P-side
+| B2  | BOOT1   | (10K to GND)       |   |
+| B10 | C13     | `BS`-column        | I |
+| 3V3 | VCC     | * *                | * |
+| GND | GND     | * *                | O |
+| 5V  | NC      | * *                |   |P-side
 
 ADC-pins will be used for joystick (optional).
 
@@ -227,45 +228,37 @@ Use DFU
 
 ### Guide for the wiring steps
 
-XXX FIXME XXX
-
-1. Test MCU board by programming via AVR-ISP with blink LED on PD6.
-
-1. LEDs are lightly glued with hot-melt glue to the key switches to prevent
-   falling.
+1. Test MCU board by programming via DFU mode with blink LED on PD6 using
+   dfu-util.
 
 1. All 56 key switches are placed into the keyboard case.  I used hot-melt glue
    to hold loose switches.  Please don't overdo it.  You can always add more
    glue after everything is completed to ensure the mechanical integrity of the
    keyboard.
 
-1. Then the wiring of rows are done.  Adjacent row pins are connected with 24mm
-   cut ETFE wire of AWG30 (0.26mmD) with each end stripped about 2mm.  Wire are
-   passed through inside cavity of the case so it doesn't interfere with the
-   bottom cap plate of the case.
+1. Then the wiring of rows are done using anode-side lead wires of diode with
+   each cathode-side lead wire connected to each switch.  The right and left
+   side of anode-side leads are connected.  This makes total of 4 AWG30 wires
+   for the row signal. (Column to row configuration)
 
-1. Then the wiring of columns are done.  Line marked anode side of diodes are
-   always connected to the key switches.  Cathode side with bar are connected
-   within each column. (Column to row configuration)
+1. Then the wiring of columns are done using short UEW AWG32 wires.  One AWG30
+   wire is soldered for each column.  This makes total of 14 AWG30 wires for
+   the column signal.
 
-1. Use tester to check keyboard connections and check insulation with reverse
-   bias for each diode.  Since diodes needs to be squeezed into tight space,
-   there is a fairly good change of shorting unexpectedly.
+1. Use tester to check keyboard connections in ohm mode.  (Please note that, in
+   ohm mode of modern multimater, diode appears as insulator for both
+   directions.)
 
-1. Connect MCU board to parts.
-
-1. Place PI tape underneath the MCU, speaker and connector positions to prevent
-   shorting the circuit and mark proper MCU position aligning with the bottom
-   cap.  Watch for VCC(5V), output pins and circuit around USB connector.
+1. Use tester to check forward and reverse voltage drop across each diode to be
+   around 0.5V-0.6V and OL (over-range) to make sure each diode pointing the
+   right direction and not shorted.  It is easy to overlook the cathode
+   marking.
 
 1. Secure position of MCU with the hot-melt glue to the case.
 
-1. Glue micro-USB female connector on PCB to the case.  (This has a short male
-   mini-USB plug soldered)
+1. Connect MCU board to parts with wire-wrapping.
 
-1. Connect mini-USB connector to MCU board.
-
-1. If keyboard functions perfectly, close the bottom plate.
+1. Connect USB-C connector to MCU board.
 
 ## BOM
 
@@ -279,6 +272,7 @@ mechanical keyboards.  It ain't cheap but it's fun!!!
 * Blank PBT 87 keycaps (ebay)           --  $20
 * Diode IN4148 equiv. (100 piece pack)  --  $ 2
 * AWG30 multi color set                 --  $ 5
+* UEW AWG32 wire                        --  $ 5?
 * Hot melt glue and glue gun            --  $10 (?)
-* AWG30 Wires, solders, circuit tester, ...
+* Solders, circuit tester, ...
 

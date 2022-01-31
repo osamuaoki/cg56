@@ -58,11 +58,12 @@ This section always uses bottom view unless otherwise noted.
 
 ### Global simplified view of wiring
 
-Here is a global simplified view of wiring of switches:
+Here is a global simplified view of wiring of switches (bottom view):
 
 ```
  P-side                                                Q-side
 
+        CD  CC  CB  CA  C9  C8  C7    C6  C5  C4  C3  C2  C1  C0
         C13 C12 C11 C10 C9  C8  C7    C6  C5  C4  C3  C2  C1  C0
         |   |   |   |   |   |   | USB |   |   |   |   |   |   |
   R0  --S---S---S---S---S---S---S-----S---S---S---S---S---S---S

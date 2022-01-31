@@ -18,10 +18,10 @@ On Debian GNU/Linux system:
 
 ```
  $ sudo apt update
- $ sudo apt install devscripts git gitk binutils-avr gcc-avr avr-libc avrdude
+ $ sudo apt install devscripts git gitk dfu-util
  ...
  $ cd ~/path/to
- $ git clone https://github.com/osamuaoki/cg56.git
+ $ git clone https://github.com/osamuaoki/gcg56.git
  $ cd cg56
  $ git subhmodule update --init
  $ cd qmk_firmware/keyboards/cg56
