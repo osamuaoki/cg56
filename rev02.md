@@ -117,12 +117,12 @@ Pin order from USB connector side:
 |-----|---------|----------------------|---|
 | GND | GND     | * *                  |   |
 | PB7 | R0      | `Q`-row              | O |
-| PD0 | R1      | `P`-row              | O |
-| PD1 | R2      | `A`-row              | O |
-| PD2 | R3      | `;`-row              | O |
-| PD3 | R4      | `Z`-row              | O |
-| PD4 | R5      | `/`-row              | O |
-| PD5 | R6      | left-bottom row      | O |
+| PD0 | R2      | `A`-row              | O |
+| PD1 | R4      | `Z`-row              | O |
+| PD2 | R6      | left-bottom-row      | O |
+| PD3 | R1      | `P`-row              | O |
+| PD4 | R3      | `;`-row              | O |
+| PD5 | R5      | `/`-bottom row       | O |
 | PD6 |         | Internal LED         | O |
 | PD7 | R7      | right-bottom row     | O |
 | PE0 | C0      | `Tab/]`-column       | I |
@@ -138,23 +138,23 @@ Pin order from USB connector side:
 | VCC | VCC     | * *                  | * |
 | GND | GND     | * *                  | O |
 | RST | RST     | * *                  | * |
-| PF7 | A?      |                      |   |
-| PF6 | A?      |                      |   |
-| PF5 | A?      |                      |   |
-| PF4 | A?      |                      |   |
+| PF7 | LED     | `Y`-side LED         | O |
+| PF6 | LED     | `Y`-side LED         | O |
+| PF5 | LED     | `T`-side LED         | O |
+| PF4 | LED     | `T`-side LED         | O |
 | PF3 | A?      |                      |   |
 | PF2 | A?      |                      |   |
 | PF1 | A?      |                      |   |
 | PF0 | A?      |                      |   |
 | Aref| A?      |                      |   |
 | GND |         |                      |   |
-| PE6 | LED3R   | `Y`-side LED         | O |
-| PE7 | LED3B   | `Y`-side LED         | O |
-| PB0 | LED2B   | `T`-side LED         | O |
+| PE6 |         |                      | O |
+| PE7 |         |                      | O |
+| PB0 |         |                      | O |
 | PB1 | SCLK    | * *                  | O |
 | PB2 | MOSI    | * *                  | O |
 | PB3 | MISO    | * *                  | O |
-| PB4 | LED2R   | `T`-side LED         | O |
+| PB4 |         |                      | O |
 | PB5 | LED1B   | `Q`-side LED         | O |
 | PB6 | LED1R   | `Q`-side LED         | O |
 | VCC | NC      | * *                  |   |
