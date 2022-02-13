@@ -81,10 +81,11 @@ There are 31 I/O needs under normal usage:
 
 This can be implemented as:
 
-* DIODE_DIRECTION COL2ROW (Column as input side)
-* ROW[0:7] =      { B7, D0, D1, D2, D3, D4, D5, D7 } (write) - Cathode
-* Column[0:6] =   { E0, E1, C0, C1, C2, C3, C4 }     (read) - Anode
-* LED[1:4][R:B] = { B6, B5, B4, B0, E7, E6, C5, C7}
+* `DIODE_DIRECTION COL2ROW (Column as input side)
+* `ROW[0:7] =      { B7, D0, D1, D2, D3, D4, D5, D7 }` (write) - Cathode
+* `Column[0:6] =   { E0, E1, C0, C1, C2, C3, C4 }`     (read) - Anode
+* `LED[1:4][R:B] = { B6, B5, F4, F5, F6, F7, C5, C7 }`
+  `                  QR  QB                  PB  PR`
 * Internal_LED =  { D6 }
 * Sound[0] =      { C6 } (OCR3A, Timer 3, channel A, 16 bits)
 
@@ -132,9 +133,9 @@ Pin order from USB connector side:
 | PC2 | C4      | `R/O`-column         | I |
 | PC3 | C5      | `T/P`-column         | I |
 | PC4 | C6      | `[/BS`-column        | I |
-| PC5 | LED4R   | `P`-side LED         | O |
+| PC5 | LED4R   | `P`-side LED BLUE    | O |
 | PC6 | SPEAKER | SPEAKER              | O |
-| PC7 | LED4B   | `P`-side LED         | O |
+| PC7 | LED4B   | `P`-side LED RED     | O |
 | VCC | VCC     | * *                  | * |
 | GND | GND     | * *                  | O |
 | RST | RST     | * *                  | * |
@@ -155,8 +156,8 @@ Pin order from USB connector side:
 | PB2 | MOSI    | * *                  | O |
 | PB3 | MISO    | * *                  | O |
 | PB4 |         |                      | O |
-| PB5 | LED1B   | `Q`-side LED         | O |
-| PB6 | LED1R   | `Q`-side LED         | O |
+| PB5 | LED1B   | `Q`-side LED BLUE    | O |
+| PB6 | LED1R   | `Q`-side LED RED     | O |
 | VCC | NC      | * *                  |   |
 
 PF-pins will be used for joystick (optional).

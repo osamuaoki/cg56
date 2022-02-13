@@ -1,13 +1,21 @@
-# Grid Keyboard with 56 keys (cg56 and gcg56)
+# Grid Keyboard with 56 keys (cg56 = cgc56 and cgg56)
 <!---
 vim:set tw=79 ts=4 sts=4 sw=4 et nosi filetype=markdown:
 -->
 
-* cg56: Cartesian Grid Keyboard with 56 keys
-    * ![cg56](img/kbdtop.jpeg)
+I used to call cg56 (Cartesian Grid Keyboard with 56 keys).  But I renamed
+their qmk names by adding a character to differentiate variants.  The github
+repository name of this hardware design memo stays "cg56".
 
+* cgc56: Cartesian Grid Keyboard (compact) with 56 keys (2022/Feb)
+    * NC laser cut MDF board
+    * AT90USB1286
+    * ![cgc56 front](img/cgc56-front.jpg)
+    * ![cgc56 side](img/cgc56-side.jpg)
 
-* gcg56: Gapped Cartesian Grid Keyboard with 56 keys
+* cgg56: Cartesian Grid Keyboard (gap) with 56 keys
+    * Hand cut and glued plastic bars.
+    * STM32F411CE
     * gcg56 : NO_PHOTO
 
 ## Background
@@ -109,6 +117,7 @@ Use least surprise design based on the standard QWERTY-keyboard.
 
 Here is an example of key assignment.
 
+Initial thought:
 ```
 default
 ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
@@ -132,9 +141,32 @@ Fn-pressed
 ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
 │___│___│Hom│End│Alt│___│Ins│Del│___│Ctl│PgU│PgD│___│___│
 └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
-
 ```
 
+[Current QMK setting: (2022/Feb updating and
+changing)](https://github.com/osamuaoki/qmk_firmware/blob/osamu1/keyboards/cgc56/keymaps/default/keymap.c)
+ -- with many tap-hold dual keys (e.g. 5 keys for space)
+```
+┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
+│Esc│ Q │ W │ E │ R │ T │ [ │ ] │ Y │ U │ I │ O │ P │BS │
+├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+│Tab│ A │ S │ D │ F │ G │ ` │ \ │ H │ J │ K │ L │ ; │Ent│
+├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+│Sft│ Z │ X │ C │ V │ B │ _ │ ' │ N │ M │ , │ . │ ↑ │ / │
+├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+│Ctr│Alt│Ins│Alt│Sft│FnU│Spc│Gui│FnD│Crl│Agr│ ← │ ↓ │ → │
+└───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
+
+┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
+│Esc│F1 │F2 │F3 │F4 │F5 │F11│F12│F6 │F7 │F8 │F9 │F10│DEL│
+├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+│n# │ 1 │ 2 │ 3 │ 4 │ 5 │ - │ = │ 6 │ 7 │ 8 │ 9 │ 0 │n\ │
+├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+│___│ ! │ @ │ # │ $ │ % │CSp│SSp│ ^ │ & │ * │ ( │PgU│ ) │
+├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
+│___│___│___│___│___│___│XXX│___│VVV│___│___│Hom│PgD│End│
+└───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
+```
 Please note:
 
 * "shift-pressed" causes the normal shift conversion
@@ -145,6 +177,7 @@ Please note:
 * All `*` keys are user customizable and can be assigned to any valid USB keyboard code.
 * http://www.keyboard-layout-editor.com/#/gists/2f5cc555a34c29650d73561a03ed3ea0
 * Let's worry about details later when we write QMK firmware.
+* Actual key layout will be experimentally determined.
 
 ### Keyboard Topography (Type 1)
 
@@ -187,7 +220,6 @@ topography.  This is my plan-B.
 
 ## Design implementations
 
-
 ### ATmega32u4 (rev01)
 
 Initially, ATmega32u4 on the generic Teensy 2.0 compatible board was considered
@@ -210,14 +242,18 @@ this project to use this MCU which offers higher IO pin counts and larger
 memory size.  (rev01 project was stalled.)
 
 In order to fit this larger board, the internal cavity of the physical keyboard
-shell box was grounded to make some space.
+shell box was grounded to make some space by brute force.
 
 I also got micro-USB female connector on pitch conversion PCB board.  I
 manually enlarged the cable connection opening to fit it.  This enabled USB
 cable connection of this keyboard to become a detachable magnet type.
 
 * See [AT90USB1286 (rev02)](rev02.md) for details of around MCU and shape of key matrix.
-* See [Key matrix for cg56](cg56.md) for electrical details of key matrix.
+* See [Key matrix for cgc56](cgc56.md) for electrical details of key matrix.
+* See [cgc56 in Osamu's QMK fork with osamu1 branch](https://github.com/osamuaoki/qmk_firmware)
+
+As you see actual key arrangement is changing .... but it is working nicely
+now.  Sound is TODO but LED are done.
 
 ### STM32F411 (rev03)
 
@@ -225,7 +261,7 @@ While modifying NC-MDF case manually, I realized I could use commodity 5mmx5mm
 plastic bars and glue to make a similar case.
 
 MCU board is placed in the gap of key switches at the center so everything was
-flat and easy tro construct.
+flat and easy to construct.
 
 Since powerful ARM board blackpill with similar form factor was available, I
 decided to use it.
@@ -235,16 +271,16 @@ switches, I decided to make gap at the center of key matrix and place MCU board
 in the gap.  **gcg56** stands for **Gapped** variant of **cg56**.
 
 * See [STM32F411CEU6 (rev03)](rev03.md) for details of around MCU and shape of key matrix.
-* See [Key matrix for gcg56](gcg56.md) for electrical details of key matrix.
+* See [Key matrix for gcg56](cgg56.md) for electrical details of key matrix.
 
 ### Firmware
 
-* See [QMK for cg56](qmk-cg56.md)
-* See [QMK for gcg56](qmk-gcg56.md)
+* See [QMK for cgc56](qmk-cgc56.md)
+* See [QMK for cgg56](qmk-cgg56.md)
 
 ### Photos
 
-* See [photo for cg56](photo-cg56.md)
-* See [photo for gcg56](photo-gcg56.md)
+* See [photo for cgc56](photo-cgc56.md)
+* See [photo for cgg56](photo-cgg56.md)
 
 
