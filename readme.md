@@ -297,10 +297,12 @@ in the gap.  **gcg56** stands for **Gapped** variant of **cg56**.
 
 **QWFRTY** layout was created as a minimal learning stress alternative layout.
 
-* **QWFRTY** moves only 12-keys from the standard QWERTY.  Almost all short-cuts stay in place.
+* **QWFRTY** moves only 11-keys from the standard QWERTY.  Almost all short-cuts stay in place.
 * **QWFRTY** encourages alternating hand typing like DVORAK by having all vowel characters on one side.  This should be lower stress.
 * **QWFRTY** doesn't trash the user experience under Vim.  `hjkl`-keys are clustered as inverse-T.
 
 ![QWFRTY](/img/QWFRTY-simple.png)
+
+See https://osamuaoki.github.io/jp/2022/02/14/qwfrty/
 
 
