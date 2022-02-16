@@ -154,7 +154,7 @@ Normal
 ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
 │Sft│ Z │ X │ C │ V │ B │ _ │ ' │ N │ M │ , │ . │ ↑ │ / │
 ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
-│Ctr│Alt│Ins│Alt│Sft│FnU│Spc│Gui│FnD│Crl│Agr│ ← │ ↓ │ → │
+│Ctr│Alt│Ins│Gui│Sft│FnU│Spc│Alt│FnD│Crl│Agr│ ← │ ↓ │ → │
 └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
 
 One of Raise or Lower
@@ -299,7 +299,7 @@ in the gap.  **gcg56** stands for **Gapped** variant of **cg56**.
 
 * **QWFRTY** moves only 11-keys from the standard QWERTY.  Almost all short-cuts stay in place.
 * **QWFRTY** encourages alternating hand typing like DVORAK by having all vowel characters on one side.  This should be lower stress.
-* **QWFRTY** doesn't trash the user experience under Vim.  `hjkl`-keys are clustered as inverse-T.
+  **QWFRTY** doesn't trash the user experience under Vim.  `hjkl`-keys are clustered as inverse-T making it even better than QWFRTY.
 
 ![QWFRTY](/img/QWFRTY-simple.png)
 
