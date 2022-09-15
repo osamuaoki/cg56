@@ -108,4 +108,10 @@ Some pin-header are soldered to Blackpill board.  From USB side: P1-P6, P9-P-las
 Removals of some pins were needed to avoid interference with case.
 
 
+## Joystick
+
+Since there were empty space at the center near your thums, I decided add
+X-Y potentiometer and wired to analog pins.
+
+See [Joystick Support](https://osamuaoki.github.io/jp/2022/04/02/joystick/) (Japanese).
 

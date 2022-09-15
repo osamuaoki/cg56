@@ -1,22 +1,107 @@
-# Grid Keyboard with 56 keys (cg56 = cgc56 and cgg56)
+# Grid Keyboard with 56 keys and its variants
 <!---
 vim:set tw=79 ts=4 sts=4 sw=4 et nosi filetype=markdown:
 -->
 
-I used to call cg56 (Cartesian Grid Keyboard with 56 keys).  But I renamed
-their qmk names by adding a character to differentiate variants.  The github
-repository name of this hardware design memo stays "cg56".
+This repo hosts data and some documents for my handwared keyboard projects. I
+call this repository as cg56 which stands for Cartesian Grid Keyboard with 56
+keys.  The corresponding keyboard name in my QMK source is cgc56 which stands
+for Cartesian Grid Keyboard (compact) with 56 keys.  The longer name is chosen
+to differentiate variants.
 
-* cgc56: Cartesian Grid Keyboard (compact) with 56 keys (2022/Feb)
+## Related memo in Japanese
+
+There are more detailed memos in Japanese on how my hobby project proceeded
+slowly since 2016. (Now 2022)  Its highlights are:
+
+* https://osamuaoki.github.io/jp/2020/01/03/cg56-1/
+* https://osamuaoki.github.io/jp/2021/12/11/atmega32u4-4/
+* https://osamuaoki.github.io/jp/2022/02/07/blackpill-1/
+* https://osamuaoki.github.io/jp/2022/03/15/home-mt/
+* https://osamuaoki.github.io/jp/2022/09/01/blackpill-4/
+* https://osamuaoki.github.io/jp/2022/09/09/home-mt2/ (review)
+
+## Keyboard project history
+
+* cg56: Cartesian Grid Keyboard with 56 keys (2016-2018)
+    * NC laser cut MDF board (cut, stacked, glued, filed, and painted)
+    * 56 keys (14 x 4)
+    * ATMega32u4 x 1 (teensy 2 compatible board with nanoBoot HID bootloader)
+    * Project stalled and case is repurposed for the next cgc56 project.
+    * [NC CAD data (dxf) is in this repository](cad/cg56.dxf)
+    * [NC CAD data (pdf) is in this repository](cad/MDF_CUT_grid56w.pdf)
+    * See [ATmega32u4 (rev01)](rev01.md) -- never made -- for details of around MCU and shape of key matrix.
+    * See [Key matrix for cg56 and cgc56](cg56.md) for electrical details of key matrix.
+
+* cgc56: Cartesian Grid Keyboard (compact) with 56 keys (2022/Feb -- initial)
     * NC laser cut MDF board
-    * AT90USB1286
-    * ![cgc56 front](img/cgc56-front.jpg)
-    * ![cgc56 side](img/cgc56-side.jpg)
+      * recycled case taken from stalled cg56
+      * Add independent USB connector board.
+      * internal space of already built case was enlarged by mechanically grinding the MDF board
+    * 56 keys (14 x 4)
+    * AT90USB1286 x 1
+      * Teensy 2++ compatible circuit board with LUFA HID bootloader
+    * initial cgc56 front view with OEM keycaps
+      <br>
+      <img src="img/cgc56-front.jpg" width="640">
+    * cgc56 side view with OEM key caps
+      <br>
+      <img src="img/cgc56-side.jpg" width="300">
+    * See [AT90USB1286 (rev02)](rev02.md) for details of around MCU and shape of key matrix.
+    * See [Key matrix for cg56 and cgc56](cg56.md) for electrical details of key matrix.
+    * See [cgc56 in Osamu's QMK fork with osamu1 branch](https://github.com/osamuaoki/qmk_firmware/blob/osamu1/keyboards/cgc56/keymaps/default/keymap.c)  -- this is not maintained.
+    * See [extra photo for cg56](photo-cg56.md)
 
-* cgg56: Cartesian Grid Keyboard (gap) with 56 keys
-    * Hand cut and glued plastic bars.
-    * STM32F411CE
-    * gcg56 : NO_PHOTO
+
+* **cgc56**: Cartesian Grid Keyboard (compact) with 56 keys (2022/Sep)
+    * Keycaps are changed to DSA.
+      * The front edge of red keycaps for the thumb are rounded using the sand
+        paper.
+      * keymaps are optimized (now "pico" is used)
+    * 56 keys (14 x 4) -- no change
+    * AT90USB1286 x 1 -- no change
+      <br>
+    * updated cgc56 top view with DSA keycaps for the pico keymap
+      ![cgc56 new](img/cgc56-20220911.jpg)
+    * See [cgc56 in Osamu's QMK fork with osamu1 branch](https://github.com/osamuaoki/qmk_firmware/blob/osamu1/keyboards/cgc56/keymaps/pico/keymap.c) -- this is maintained.
+
+* cgg56: Cartesian Grid Keyboard (gap) with 56 keys (2022/Feb)
+    * Hand cut and glued 5mm x 5mm plastic bars
+    * 56 keys (14 x 4) + X-Y joystick (resistive)
+    * STM32F411CE x 1 (WeAct Blackpill)
+    * cgg56 front view with OEM keycaps
+      <br>
+      <img src="img/cgg56.jpg" width="640">
+    * See [STM32F411CEU6 (rev03)](rev03.md) for details of around MCU and shape of key matrix.
+    * See [Key matrix for gcg56](cgg56.md) for electrical details of key matrix.
+    * See [STM32F411CE (1)](https://osamuaoki.github.io/jp/2022/02/07/blackpill-1/) (Japanese) for cgg56
+    * See [cgg56 in Osamu's QMK fork with osamu1 branch](https://github.com/osamuaoki/qmk_firmware/blob/osamu1/keyboards/cgg56/keymaps/pico/keymap.c) -- this is not maintained.
+
+* cgs58: Cartesian Grid Keyboard (split) with 58 keys
+    * Hand cut and glued 5mm x 5mm plastic bars
+      * recycled case taken from cgg56
+      * hack sawed cgg56 at the center and extended with glued 5mm x 5mm plastic bars
+    * 58 keys ((7 x 4 + 1) x 2)
+    * STM32F411CE x 2 (WeAct Blackpill)
+    * cgs58 front view with OEM keycaps
+      <br>
+      <img src="img/cgs58-20220911.jpg" width="640">
+    * This is 16U wide and can't fit into A4 size case. (Too big!)
+    * See [STM32F411CE (4)](https://osamuaoki.github.io/jp/2022/09/01/blackpill-4/) (Japanese) for the modification from cgg56 to cgs58.
+    * See [cgs58 in Osamu's QMK fork with osamu1 branch](https://github.com/osamuaoki/qmk_firmware/blob/osamu1/keyboards/cgs58/keymaps/pico/keymap.c) -- this is not maintained.
+
+* **cgs50**: Cartesian Grid Keyboard (split) with 50 keys (2022/Sep)
+    * Hand cut and glued 5mm x 5mm plastic bars
+      * recycled case taken from cgs58
+      * hack sawed cgs58 at the both ends and glued 5mm x 5mm plastic bars to close the ends.
+    * 50 keys ((6 x 4 + 1) x 2)
+    * STM32F411CE x 2 (WeAct Blackpill)
+    * cgs50 front view with OEM keycaps
+      <br>
+      <img src="img/cgs50-20220913.jpg" width="640">
+    * This is 14U wide and can fit into A4 size case.
+    * Just cut both ends and removed wiring around them.
+    * See [cgs58 in Osamu's QMK fork with osamu1 branch](https://github.com/osamuaoki/qmk_firmware/blob/osamu1/keyboards/cgs50/keymaps/pico/keymap.c) -- this is maintained.
 
 ## Background
 
@@ -44,7 +129,7 @@ The following design policy is deployed to design a custom keyboard.
 
 * Use only FREE software (DFSG compliant)
 * Compact, simple, and natural design
-    * Compact enough to be portable: 56 keys (4 rows x 14 columns)
+    * Compact enough to be portable: 56 keys (4 rows x 14 columns) or less
     * Keys in the linear orthogonal Cartesian grid coordinate positions
     * Never move pinkie fingers more than one column away.
     * Never move pointer fingers more than two column away.
@@ -54,29 +139,33 @@ The following design policy is deployed to design a custom keyboard.
     * Minimal key-position change from the standard ANSI (US).
     * BS at the right top corner.
     * ESC in place of CapsLock position (yay, Vim).
-    * Keep F and J keys separated with 4 keys instead of standard 2 keys.
-    * Move non-shift non-alphabet symbols to the center.
-    * Fn keys in thumb home positions to offer practically all 104 keys.
-        * Function keys are in the top row with Fn.
+    * Keep F and J keys separated with 4 keys (or more) instead of standard 2 keys.
+    * Move non-shift non-alphabet symbols to the center if you ever have them.
+    * Layer changing Fn keys in thumb home positions to offer practically all ANSI 104 (JIS 106?) keys.
+        * Function keys (F1-F12) are in the top row with Fn.
         * Number keys are in the high-middle row with Fn.
         * Odd keys are in the low-middle row with Fn
-    * SPACE should be at the center of the bottom row.
-    * Cursor keys are in the hard to reach part of the bottom row.
-    * Topography effects using key cap height differences with the OEM key set.
+    * SPACE should be at the thumb position of the bottom row.
+    * Cursor keys are in the hard to reach part of the bottom row if you ever have them.
+    * Topography effects to find finger home positions
+      * Use key cap height differences with the OEM keycaps.
+      * Use mechanically modified thumb keys with DSA keycaps.
 * Keep it simple and cheap (It's my first custom keyboard!)
     * Use commodity electronics parts (as much)
-    * Use the laser cut MDF board as the case (if needed)
-    * Use only 1U key caps from the OEM key cap set (=no stabilizer)
+      * Use the laser cut MDF board as the case (if needed)
+      * Use 5mm x 5mm plastic bars and glue purchased at the local hardware
+        shop.
+    * Use only 1U key caps (=no stabilizer)
     * No PCB but lots of messy hand wiring :-)
 
 ## What's different
 
-You may wonder what's different from other so called "ortholinear" keyboards.
+You may wonder what's different from other so called "ortholinear" keyboards
+such as plank.
 
-* Less stress to pinkie fingers.
 * Enough distance between left and right hands. (2U->4U)
 * 7 columns per one side instead of 6 columns such as
-  [plunk](https://olkb.com/planck).
+  [plunk](https://olkb.com/planck) to minimize key position irregularities.
 * Single piece compact design without irregular shape vs.
   [Ergo42](https://bit-trade-one.co.jp/selfmadekb/adskb42/) and
   [ErgoTravel](https://github.com/jpconstantineau/ErgoTravel) .
@@ -85,11 +174,13 @@ You may wonder what's different from other so called "ortholinear" keyboards.
 Yah, it's not much different in basic hardware design ... it's mostly a taste
 difference.
 
+As for the pinkie finger stress, the home row mod keymap really helped.
+
 ## Design thoughts
 
 Here, ASCII art versions of basic design implementation ideas are provided.
 
-### Case Design
+### Case Design for cg56
 
 Case with orthogonal key switch matrix design with enough space for thumb
 finger coverage and without stressing pinkie finger.
@@ -142,52 +233,54 @@ Fn-pressed
 └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
 ```
 
-[Current QMK setting: (2022/Feb updating and
-changing)](https://github.com/osamuaoki/qmk_firmware/blob/osamu1/keyboards/cgc56/keymaps/default/keymap.c)
- -- with many tap-hold dual keys (e.g. 5 keys for space)
+[Current QMK setting: (2022/Sep)](https://github.com/osamuaoki/qmk_firmware/blob/osamu1/keyboards/cgc56/keymaps/pico/keymap.c)
+ -- with many tap-hold dual function keys.
 ```
-Normal
+0th layer: Normal tap (Essential stable keys only)
 ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
-│Esc│ Q │ W │ E │ R │ T │ [ │ ] │ Y │ U │ I │ O │ P │BS │
+│Tab│ Q │ W │ E │ R │ T │   │   │ Y │ U │ I │ O │ P │BS │
 ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
-│Tab│ A │ S │ D │ F │ G │ ` │ \ │ H │ J │ K │ L │ ; │Ent│
+│Esc│ A │ S │ D │ F │ G │   │   │ H │ J │ K │ L │ ; │Ent│
 ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
-│Sft│ Z │ X │ C │ V │ B │ _ │ ' │ N │ M │ , │ . │ ↑ │ / │
+│Mut│ Z │ X │ C │ V │ B │   │   │ N │ M │ , │ . │ / │Psc│
 ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
-│Ctr│Alt│Ins│Gui│Sft│FnU│Spc│Alt│FnD│Crl│Agr│ ← │ ↓ │ → │
+│   │   │   │   │MUH│Spc│   │   │Spc│HEN│   │   │   │   │
 └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
 
-One of Raise or Lower
+0th layer: Normal hold (MOD and LAYER keys)
 ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
-│Esc│F1 │F2 │F3 │F4 │F5 │F11│F12│F6 │F7 │F8 │F9 │F10│DEL│
+│   │   │   │   │   │   │   │   │   │   │   │   │   │   │
 ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
-│n# │ 1 │ 2 │ 3 │ 4 │ 5 │ - │ = │ 6 │ 7 │ 8 │ 9 │ 0 │n\ │
+│Ctl│Sft│Crl│Alt│Gui│Agr│   │   │Agr│Gui│Alt│Ctl│Sft│   │
 ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
-│___│ ! │ @ │ # │ $ │ % │ _ │ + │ ^ │ & │ * │Ins│PgU│Del│
+│Sft│   │   │Gui│MO2│   │   │   │   │   │   │   │   │Sft│
 ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
-│___│___│___│___│___│___│XXX│___│VVV│___│___│Hom│PgD│End│
+│   │   │   │   │   │   │   │   │   │   │   │   │   │   │
 └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
 
-Both Raise and Lower
+1st layer: activate with one Fn-key (= space key) pressed as hold
 ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
-│XXX│___│___│___│___│___│Nlk│Slk│Pau│Psc│App│In5│In4│XXX│
+│F11│F1 │F2 │F3 │F4 │F5 │   │   │F6 │F7 │F8 │F9 │F10│F12│
 ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
-│___│P1 │P2 │P3 │P4 │P5 │ ( │ ) │P6 │P7 │P8 │P9 │P0 │PEn│
+│Cap│ 1 │ 2 │ 3 │ 4 │ 5 │   │   │ 6 │ 7 │ 8 │ 9 │ 0 │App│
 ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
-│___│P/ │P* │P- │P+ │P= │ { │ } │Cnf│Mou│XXX│P. │___│XXX│
+│   │ ` │   │   │ - │ = │   │   │ { │ } │ \ │   │ ' │LL2│
 ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
-│___│___│___│___│___│VVV│___│___│VVV│___│___│___│___│___│
+│   │   │   │   │   │vvv│   │   │vvv│KAN│   │   │   │   │
 └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
 
 ```
 Please note:
 
 * "shift-pressed" causes the normal shift conversion
-* Missing number row keys are generated by Fn-pressed A-row keys.
 * Missing function keys are generated by Fn-pressed Q-row keys.
-* All `*` keys are user customizable and can be assigned to any valid USB keyboard code.
-* Let's worry about details later when we write QMK firmware.
+* Missing number row keys are generated by Fn-pressed A-row keys.
+* Missing outlier keys are generated by Fn-pressed Z-row keys.
+* Let's worry about details later when in QMK firmware.
 * Actual key layout will be experimentally determined.
+  * 2nd layer: cursor
+  * 3rd layer: ten-keys
+  * 4th layer: mouse keys and system control
 
 ### Keyboard Topography (Type 1)
 
@@ -223,79 +316,17 @@ easy to be reached.
 
 ### Keyboard Topography (Type 2)
 
-Alternatively, DSA key tops may be used.  For that, modifying some keys with
-soft UV-resin or crazy-glue+baking-soda may be interesting options to create
-topography.  This is my plan-B.
+Alternatively, DSA key tops may be used.
+
+For that, I thought that modifying some keys with soft UV-resin or
+crazy-glue+baking-soda may be interesting options to create topography.
+
+I ended up grinding off front edge of thumb keys.
 
 
-## Design implementations
+## Sitalled side project -- QWFRTY layout
 
-### ATmega32u4 (rev01)
-
-Initially, ATmega32u4 on the generic Teensy 2.0 compatible board was considered
-as the choice for MCU since it offers better access to the I/O pins (25) than
-pro-micro boards (20) and cheap.
-
-* See [ATmega32u4 (rev01)](rev01.md) -- never made -- for details of around MCU and shape of key matrix.
-* See [Key matrix for cg56](cg56.md) for electrical details of key matrix.
-
-Never completed!
-
-### AT90USB1286 (rev02)
-
-After making the physical keyboard shell box in 2018 for rev01, I
-procrastinated to finish this project for about 2 years without doing anything.
-
-Then AT90USB1286 on the generic Teensy 2.0++ compatible board became available
-in very reasonable price point and I got 2 of them.  So I decided to switch
-this project to use this MCU which offers higher IO pin counts and larger
-memory size.  (rev01 project was stalled.)
-
-In order to fit this larger board, the internal cavity of the physical keyboard
-shell box was grounded to make some space by brute force.
-
-I also got micro-USB female connector on pitch conversion PCB board.  I
-manually enlarged the cable connection opening to fit it.  This enabled USB
-cable connection of this keyboard to become a detachable magnet type.
-
-* See [AT90USB1286 (rev02)](rev02.md) for details of around MCU and shape of key matrix.
-* See [Key matrix for cgc56](cgc56.md) for electrical details of key matrix.
-* See [cgc56 in Osamu's QMK fork with osamu1 branch](https://github.com/osamuaoki/qmk_firmware)
-
-As you see actual key arrangement is changing .... but it is working nicely
-now.  Sound is TODO but LED are done.
-
-### STM32F411 (rev03)
-
-While modifying NC-MDF case manually, I realized I could use commodity 5mmx5mm
-plastic bars and glue to make a similar case.
-
-MCU board is placed in the gap of key switches at the center so everything was
-flat and easy to construct.
-
-Since powerful ARM board blackpill with similar form factor was available, I
-decided to use it.
-
-In order to avoid dead space caused by placing MCU board under the key
-switches, I decided to make gap at the center of key matrix and place MCU board
-in the gap.  **gcg56** stands for **Gapped** variant of **cg56**.
-
-* See [STM32F411CEU6 (rev03)](rev03.md) for details of around MCU and shape of key matrix.
-* See [Key matrix for gcg56](cgg56.md) for electrical details of key matrix.
-
-### Firmware
-
-* See [QMK for cgc56](qmk-cgc56.md)
-* See [QMK for cgg56](qmk-cgg56.md)
-
-### Photos
-
-* See [photo for cgc56](photo-cgc56.md)
-* See [photo for cgg56](photo-cgg56.md)
-
-## Side project -- QWFRTY layout
-
-**QWFRTY** layout was created as a minimal learning stress alternative layout.
+**QWFRTY** layout was investigated as a minimal learning stress alternative layout but it was not so good.
 
 * **QWFRTY** moves only 11-keys from the standard QWERTY.  Almost all short-cuts stay in place.
 * **QWFRTY** encourages alternating hand typing like DVORAK by having all vowel characters on one side.  This should be lower stress.
@@ -303,6 +334,6 @@ in the gap.  **gcg56** stands for **Gapped** variant of **cg56**.
 
 ![QWFRTY](/img/QWFRTY-simple.png)
 
-See https://osamuaoki.github.io/jp/2022/02/14/qwfrty/
+See https://osamuaoki.github.io/jp/2022/02/14/qwfrty/ (Japanese)
 
 
